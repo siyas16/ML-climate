@@ -1,1 +1,3 @@
+**February 23, 2025**
 
+We spent the week looking around for data sources we could use for our project. Right now, we're considering using multiple datasets and basically overlaying/combining them for the study we want to do. Since we're trying to study how climate change has affected interactions between different bird species, we want data that captures climate change effects (ex: differences in global temperature or differences in extreme weather events) that we could combine with a dataset we found about bird species. That way, we could do a time analysis of how, for example, has interactions between bird species changed in the past x years as the global temperature has risen. I will add the datasets we've found to a file in the etc directory.
