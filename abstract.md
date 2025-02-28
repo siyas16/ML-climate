@@ -1,3 +1,5 @@
 # Studying Effects of Climate Change on Bird Species Interactions: Forcasting interspecies competition using counterfactural models and machine learning
 
-We will be using a dataset we have found on Bird Species distribution to study how interactions have changed between species as climate conditions have changed. The dataset includes data from breeding and non-breeding seasons in America, giving us the potential to see how breeding habits have changed as well.
+Climate change is reshaping ecosystems by changing bird species distributions and interactions. Our project investigates whether rising temperatures, shifting precipitation patterns, and extreme weather events have influenced bird species competitions specically those with overallping ecological niches (). Using long-term bird speices data from eBird, we quantify co-occurance patterns over time and integrate habitat preference data from the Audubon Climate Reports. We also integrate historical climate data from ... to investigate the impact of enviornmental changes on species overlap. 
+
+We will be using a dataset we have found on Bird Species distribution to study how interactions have changed between species as climate conditions have changed. The dataset includes data from breeding and non-breeding seasons in America, giving us the potential to see how breeding habits have changed as well. 
