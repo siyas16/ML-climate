@@ -9,3 +9,7 @@ Some of the datasets we are looking at include bird migration data from https://
 **March 9, 2025 - Malini**
 
 Last week, we talked about what questions we wanted to explore and decided on focusing on bird species that compete for the same resources. We looked at ecological models about this topic and came across the Resource Ratio Theory or the R* rule by George David Tilman which can be used to model population dynamics for species that compete for the same resource. We also started putting together the datasets by using the average monthly temperature for the past 30 years from Berkeley Earth and bird species observations for the last 30 years from eBird. Next week, we plan to finish compiling the data and start visualizing it. We will also start working on a causal model based on the research we looked at. 
+
+**March 15, 2025 - Siya**
+
+Fell behind on journaling because of midterms, but we're currently trying to decide which bird species in particular we want to focus on. We might be considering coastal birds. More updates to come throughout the week... 
