@@ -27,4 +27,5 @@ Wanted to add that we researched other causal models for ecology before we final
 So I spent the week researching different fish species that Osprey and Bald Eagles compete for and how those fish species are being impacted by climate change. I found this report: https://psf.ca/salmon/ that details effects of climate change on pacific salmon specifically. We've decided to focus our research on the Pacific Coast so that we can use the fish data used in this report and because Osprey and Bald Eagles are commonly found on the pacific coast. I've uploaded the fish data we'll be using into the src folder. 
 
 **April 1, 2025 - Malini**
+
 I was sick this weekend, so I didn't have much time to upload what I have been working on. I just uploaded the code for the model I was working on and plan to add information to the document folder. 
