@@ -29,3 +29,6 @@ So I spent the week researching different fish species that Osprey and Bald Eagl
 **April 1, 2025 - Malini**
 
 I was sick this weekend, so I didn't have much time to upload what I have been working on. I just uploaded the code for the model I was working on and plan to add information to the document folder. 
+
+**April 6, 2025 - Malini**
+We are working on the introduction, hypothesis, and method section of the paper while improving the code to generate the tables/graphs for our paper. 
