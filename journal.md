@@ -33,3 +33,6 @@ I was sick this weekend, so I didn't have much time to upload what I have been w
 **April 6, 2025 - Malini**
 
 We are working on the introduction, hypothesis, and method section of the paper while improving the code to generate the tables/graphs for our paper. 
+
+**April 8, 2025 - Siya**
+Over the next week, we'll be working on our model and trying to optimize/finalize it. We plan on doing further research into how SCM's are coded and ensuring that we've approached our problem correctly. We'll also be writing some data cleaning scripts to deal with basic data issues, such as unnecessary columns or missing data.
