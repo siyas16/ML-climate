@@ -37,3 +37,7 @@ We are working on the introduction, hypothesis, and method section of the paper 
 **April 8, 2025 - Siya**
 
 Over the next week, we'll be working on our model and trying to optimize/finalize it. We plan on doing further research into how SCM's are coded and ensuring that we've approached our problem correctly. We'll also be writing some data cleaning scripts to deal with basic data issues, such as unnecessary columns or missing data.
+
+**April 13, 2025 - Siya**
+
+I've uploaded a cleaning script I wrote for the fish data so we have only necessary columns are the correct time range. I also added the temperature data specifically for the Pacific coast region. Then, I made some changes to our model and now we're incorporating interaction terms into our SCM. Interaction terms represent the dependency between the temperature and fish, and what effect that dependency then has on the birds we're studying. 
