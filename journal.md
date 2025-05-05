@@ -41,3 +41,6 @@ Over the next week, we'll be working on our model and trying to optimize/finaliz
 **April 13, 2025 - Siya**
 
 I've uploaded a cleaning script I wrote for the fish data so we have only necessary columns are the correct time range. I also added the temperature data specifically for the Pacific coast region. Then, I made some changes to our model and now we're incorporating interaction terms into our SCM. Interaction terms represent the dependency between the temperature and fish, and what effect that dependency then has on the birds we're studying. 
+
+**Monday, May 15, 2025 - Malini**
+These past two weeks, we have been working on finishing up our code and presentation. In terms of the code, we have implemented our non-causal model (settling on random forest) and finished analyzing the competitive advantage given different fish availability levels using our non-causal model. We have also implemented our causal model using the SEM package in R. We are in the process of finishing up the competitive advantage given different fish availability levels for our causal model and have started working on the final latex report. 
