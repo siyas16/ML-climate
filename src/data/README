@@ -1,1 +1,5 @@
-store all data here
+All of the data we worked with is in this folder. 
+We processed fish data, temperature data, and bird data 
+(in the folders titled be (for bald eagle) 
+and osprey to create the finaldataset that we used 
+called merged_df.csv. 
