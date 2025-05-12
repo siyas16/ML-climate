@@ -1,0 +1,134 @@
+% !TEX program = pdflatex
+\documentclass{article}
+\input{preamble/preamble}
+\input{preamble/preamble_math}
+
+\begin{document}
+
+\title{\textbf{Climate Change and Competition: Modeling the Impact of Rising Temperatures on Bald Eagles and Ospreys
+}}
+\date{\today}
+\author{Malini Kundamal (mk4329) and Siya Sharma (ss6916)}
+
+\maketitle
+
+\section{Abstract}
+Climate change is reshaping ecosystems by changing bird species distributions, food webs, and interspecies interactions. Our project investigates whether rising temperatures and their effect on salmon population have influenced bird species competition, specifically those with overlapping ecological niches like food based competition and habitat based competition. Using long-term bird species data from eBird, we quantify bird species interaction patterns over time. To understand the effect of climate change on fish populations, we used data from the Pacific Salmon Foundation. We also integrate historical climate data from NOAA to investigate the impact of environmental changes on species interactions. 
+
+We use a combination of ecological modeling and machine learning techniques to analyze trends of bird species interactions and predict future shifts in bird species interactions. Initially, we began with non-causal methods to capture the interactions between different variables. Then, we used causal inference to distinguish correlation from causation in climate-driven changes. Lastly, we used predictive modeling to forecast future dynamics in avian competition under different climate scenarios. 
+
+\section{Introduction}
+Understanding how climate change impacts entire ecosystems like the pacific coastal ecosystems is very difficult because of how many variables are involved. For example, rising temperatures are causing a decline in fish population, which, in turn, affects species that rely on fish as a primary food source, like bald eagles and ospreys. The goal of our project is to predict how climate-induced changes in fish availability will impact the competitive dynamics between these two bird species. By doing so, we hope to forecast how climate change could alter the distribution and success of bald eagles and ospreys in the future, which can inform how to best work on conservation for coastal ecosystems.
+
+\section{Background / Related Work}
+For our project, we chose two bird species, bald eagles and ospreys, which are known to aggressively compete against each other for the same habitats and resources \cite{b1}. Both ospreys and bald eagles rely on fish as their main food source, but these species hunt for fish differently. Bald eagles are territorial and often attack other birds like ospreys in order to steal fish from them. So, bald eagles are not solely dependent on catching fish themselves. This allows them to persist in areas where fish populations are low because they can rely on other food sources like scavenging or stealing fish from other birds like ospreys. In contrast, ospreys are more specialized hunters that dive for fish and rely heavily on the availability of fish for hunting. They do not have the same flexibility to survive on lower fish availability, especially if they cannot catch enough fish, so they are much more vulnerable to declines in fish availability. 
+
+Fish populations are important to many ecosystems, especially those in coastal areas. Fish populations have been impacted by various environmental factors, including rising temperatures. As you can see in Figure 1 (which plots our fish population data against our temperature data), fish availability has decreased over time, especially during periods of higher temperatures. We also referred to the State of Pacific Salmon Report published by the Pacific Salmon Foundation in 2024 \cite{b2} which found that Pacific Salmon populations are in decline. 
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\textwidth]{latex_template/fish_population.png}}
+\caption{Temperature versus Spawners Over Time}
+\label{fig}
+\end{figure} 
+
+To forecast the competitive dynamics between bald eagles and ospreys under changing environmental conditions, we chose the ecological model known as The Resource Ratio Hypothesis \cite{b3}, which states that when species compete for the same resource, the species that can persist at the lowest resource level will outcompete the others. So, as fish availability declines due to climate-driven changes, bald eagles, which can survive at lower fish levels, will outcompete ospreys. This would lead to increased competition between bald eagles and ospreys and reduce osprey’s success in getting fish. We evaluated this competitive dynamic using the ratio of bald eagles to ospreys. 
+
+\section{Hypothesis}
+As climate change leads to a decline in fish availability, bald eagles, which can survive on lower fish resources due to scavenging, will be more resilient to these changes than ospreys, which rely on active hunting for fish. So, our hypothesis is that bald eagles will increase in dominance over ospreys, leading to greater competition for fish and a decrease in osprey success in obtaining food. Thus, in our causal model, climate variables like temperature affect fish populations, which in turn drive competitive interactions between bald eagles and ospreys which you can see in our initial DAG diagram in figure 2. Temperature influences fish availability by affecting spawning success and fish survival rates. Fish availability then directly impacts both osprey and bald eagle populations, as both species rely on fish as a major food source. Also, as bald eagles steal fish from ospreys, we also hypothesize that the osprey population affects the bald eagle population.
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=0.5\textwidth]{latex_template/initial_dag_diagram.png}}
+\caption{Initial Directed Acyclic Graph Diagram}
+\label{fig}
+\end{figure} 
+
+Formally, we are interested in the causal effect of temperature on the competition between bald eagles and ospreys, which we can write as:
+\[
+f(y) = E\left[\frac{\text{Bald Eagle Population}}{\text{Osprey Population}} \mid do(\text{Temperature Increase} = y\right]
+\]
+
+This function represents the expected population ratio under hypothetical interventions on temperature, aligning with the Resource Ratio Hypothesis by estimating how shifts in environmental stressors influence species competition. However, our noncausal models estimate the following:
+
+\[
+g(y) = {E}\left[\frac{\text{Bald Eagle Population}}{\text{Osprey Population}} \mid \text{Temperature Increase} = y\right]
+\]
+
+This captures correlation, not causation. We make the following assumptions: 1) temperature is a primary driver of fish availability, 2) fish availability mediates most of the relationship between temperature and bird populations, and 3) other confounding variables are either negligible or partially accounted for through lagging and rolling averages of temperature. Furthermore, we use structural models and sequential prediction (first estimating fish availability, then osprey population, then bald eagle population) in order to approximate the underlying causal pathway from temperature to competition. 
+
+\section{Methods}
+\textbf{Dataset and Data Processing}
+
+We gathered and combined three datasets, bird counts of Bald Eagles and Ospreys from eBird citizen-science data \cite{5}, fish availability data from the Pacific Salmon Foundation \cite{b2}, and temperature data from the National Oceanic and Atmospheric Administration \cite{b4}. All three datasets were from 1994 to 2024 on the Pacific coast. To process these datasets, we cleaned the data by removing any rows with missing data and then merged the data to align them by month and year.
+
+\textbf{Noncausal Models}
+
+For the noncausal models, we used a staggered time series validation method, where we trained on one decade and tested on the next. So, we trained on the dataset from 1994-2004, tested on the dataset from 2004-2014, trained on the dataset from 2004-2014, and then tested again on the dataset from 2014-2024. We implemented three random forest time series models to predict fish availability, osprey population, and bald eagle population. To predict fish availability, we used temperature and the number of spawning fish; to predict osprey population, we used the output of the fish availability model and temperature, and to predict bald eagle population, we used the output of the osprey population model, the output of the fish availability model, and the temperature. To account for the environmental changes like temperature shifts and their impact on fish availability, osprey behavior, and bald eagle interactions, we ran these models with a 1 month lag, 2 month lag, 3 month lag, and 3 month rolling average for temperature. This is important because ocean temperature may influence spawning success weeks before changes are reflected in fish availability. Similarly, osprey population responses may respond to shifts in fish population with a delay, so lags and rolling averages help account for these ecological delays and smooth out this short-term variability \cite{b6}. 
+
+\textbf{Causal Model}
+
+For our causal model, we used structural equation modeling which explicitly models hypothesized causal relationships between variables. We used the SEM Lavaan package in R for our modeling as this package is able to capture complex relationships between variables, including latent variables. We believe this worked well for the relationships we wanted to study, specifically competition. We based our equations off of the DAG we hypothesized to study if the causal relationships we hypothesized were true, and if so, how strong. We also captured relationships we didn’t expect between variables as you will see from the final generated DAG in the results section below. So, essentially, we fed the hypothesized DAG straight into the model using Lavaan. 
+
+\section{Results}
+\textbf{Noncausal Models}
+
+The results for the noncausal models can be found in figure 3. As you can see, for the random forest time series with 1 month lag, the model predicting fish availability had an $R^2$ value of 0.9986 for 2004-2014 and 0.9985 for 2014-2024, showing that there is a strong correlation between the predicted and actual fish availability, as the model is almost perfectly predicting fish availability. The osprey population is also predicted quite well from 2004-2014 with an $R^2$ value of 0.9329, but not as well for 2014-2024, which has an $R^2$ value of 0.7424. The bald eagle population prediction is not as strong, with a much lower $R^2$ value than expected of 0.4168 for 2004-2014, but a much higher $R^2$ value of 0.8748 from 2014-2024, indicating that the prediction improves significantly. For the random forest time series with a 2 month lag, there were similar $R^2$ values for fish availability for 2004-2014 and 2014-2024 to the random forest time series with a 1 month lag. The osprey population prediction for 2014-2024 ($R^2$ value of 0.8534) improves compared to the 1 month lag model, indicating that the 2 month lag is better at capturing trends in the osprey population, but the bald eagle prediction ($R^2$ value of 0.7952) is worse than the 1 month lag model. The random forest time series with a 3 month lag is worse than the random forest time series with a 2 month lag, indicating that a 3 month lag model is worse at capturing the data. Lastly, the random forest time series with a 3 month rolling average does best overall at capturing the fish, osprey, and bald eagle populations, though the 2 month lag is still the best for predicting the osprey population. 
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\textwidth]{latex_template/non_causal_results.png}}
+\caption{Noncausal Model Results}
+\label{fig}
+\end{figure} 
+
+We decided to use the final months of 2024 as a baseline reference point and the random forest time series with a 3 month rolling average to plot the effect of temperature increase on competition, as it was the best model overall. As you can see in figure 4, as temperature increases, which is highly correlated with a decrease in fish population, the competition between bald eagles and ospreys increases. This competition slowly increases with a peak around an 0.65 ℃ increase in temperature before sharply decreasing and sharply increasing again around an 1.15 ℃ increase in temperature, indicating that a moderate increase in temperature (0.65 ℃) can have drastic effects on the ecosystem by increasing competition between bald eagles and ospreys. This increase in competition would force both bird species to compete for increasingly limited resources. However, as an increase in temperature beyond 0.65 ℃ could lead to a slight decrease in competition (though still significantly more competition than zero to minimal temperature increase (0 ℃ - 0.5 ℃) because the fish population could decline further and force both bird species to adapt or relocate. Beyond a 1.15 ℃ increase, the competition continues to rise again, suggesting that at higher temperatures, the dynamics between these species are influenced by additional factors like further resource scarcity, behavioral changes, or environmental shifts that could increase the competition for food. 
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\textwidth]{latex_template/noncausal_graph.png}}
+\caption{Effect of Temperature Increase on Competition}
+\label{fig}
+\end{figure}
+
+\textbf{Causal Model}
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=\textwidth]{latex_template/causal_model_results.png}}
+\caption{Causal Model Results}
+\label{fig}
+\end{figure}
+
+The results from the causal model are shown in figure 5. As you can see, there is a strong negative effect from temperature to fish availability, indicated by the coefficient of -0.954, meaning that warmer temperatures decrease fish availability. The coefficient -0.358 for fish availability to osprey count indicates that there is a moderate negative effect, indicating that as fish availability increases, osprey count decreases which could be due to lag effects or nonlinear dynamics. The coefficient for osprey count to fish availability is 0.309, indicating there could be a feedback loop where ospreys might improve fish visibility or be a proxy for fish-rich areas. The coefficient for osprey count to bald eagle count is 0.696, indicating there is a strong positive effect, so more ospreys means more bald eagles which could be because bald eagles often steal fish from ospreys. The coefficient for bald eagles to fish availability is 0.320, which is a positive effect, also indicating there might be a feedback loop where bald eagles improve fish visibility or could be a proxy for fish-rich areas. The test statistic (Chi-square) indicates how well the model fits the data, and since it is approximately 0.268, this suggests a good fit. 
+
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=0.5\textwidth]{latex_template/dag_diagram.png}}
+\caption{DAG Diagram from SEM Model in R}
+\label{fig}
+\end{figure}
+
+In figure 6, we can see the DAG produced from the findings of our causal SEM. Temperature does have a strong influence on fish availability, which is what we expected to find. We also found that both bald eagles and osprey have an influence on fish availability, which makes sense since both of these species consume fish so they would negatively impact fish populations. The most surprising find was this strong coefficient between osprey populations and bald eagles population, suggesting that competition does indeed take place between the two species and affect their populations. 
+
+\section{Conclusions, Limitations, and Potential Future Directions}
+Our findings reveal that noncausal models, particularly the random forest time series with a 3-month rolling average, produced highly accurate predictions of fish availability and bird populations. The 2-month lag model performed best for predicting osprey populations, while the 1-month lag model was best for predicting bald eagle populations. This suggests that different species respond to environmental changes on different timescales. Our simulation results show that increases in temperature, strongly correlated with decreases in fish availability, lead to more competition between bald eagles and ospreys. This competition peaks around a 0.65 ℃ increase before fluctuating at higher temperatures, indicating that even moderate warming can destabilize the pacific coastal ecosystem. Also, these nonlinear effects suggest that ecosystem responses to climate change are not gradual but could involve sharp behavioral or population shifts. Causal analysis through structural equation modeling further confirmed some of these dynamics. Temperature had a strong negative effect on fish availability, while osprey population had both a feedback effect on fish availability, and a strong positive influence on bald eagle population. The positive coefficients from both osprey and bald eagle populations to fish availability could reflect ecological feedback loops or habitat colocation effects, where predator presence signals fish areas. The strong positive coefficient between ospreys and bald eagles suggests competitive interspecies interaction, which is consistent with ecological observations of bald eagles stealing from ospreys. 
+
+Our biggest limitations lie in our data. The bird data is purely observational. eBird is a source where anyone with an account can record bird sightings, so it fully relies on people recording each and every bird sighting. We studied the period between 1994-2024 because we thought this was a long enough time period to observe changes in fish availability and competition between the two bird species. However, the eBird data from 1994-1999 was pretty sparse compared to data from the rest of the time period, probably because of this source not being as known and popular. Also, people may have used the internet and smart devices less, or less households had these back then compared to now. We recognize that this definitely impacts our results as the data is not robust. Also, the year 2020 had way more counts of both species of birds perhaps because of the pandemic. People were spending more time going on walks and therefore may have had more frequent sightings. They also could have had more time to report every single sighting that occurred. As for the temperature data we are using, it comes from both land and ocean temperature which is also a limitation. Solely sea surface temperature from the Pacific Coast would have been ideal because it is less prone to extreme temperature fluctuations, thus making it more stable than air temperature. Also, sea surface temperature impacts fish more directly than air temperature due to fish being ectothermic, meaning their body temperature is tied closely to surrounding water temperature. Unfortunately, it was difficult to find sea surface temperature data that encompassed the entire Pacific Coast, as the data we could find was very concentrated to specific cities or bodies of water. 
+
+When we constructed our causal model, we chose not to include lagged variables like temperature because we wanted to let the SEM model output the relationships between the variables, but this choice might have been important for interpreting some of the coefficients. For example, the moderate negative effect from fish availability to osprey count is counterintuitive, as we would typically expect higher fish availability to support larger osprey populations. However, one explanation for this could be the absence of lags in the causal structure. In reality, ospreys may respond to changes in fish population with a delay, as an increased fish population in one month could influence osprey reproductive success or migration patterns in a subsequent month. By not incorporating this lag, the model may capture a suppressed relationship, potentially reflecting short-term fluctuations or indirect dynamics. This is another limitation of our project. Our causal model captures important immediate dependencies, but it could have underestimated time delayed causal effects, especially in systems where biological responses take time. 
+
+For future work, we would love to find sea surface temperature encompassing a wider region so we can better predict the fish availability, especially for migratory fish species. We’d also like more robust and higher frequency population data for the ospreys and bald eagles. Moving away from just data limitations, we think it would also be interesting to study more ecological and environmental variables that could provide a more holistic view of the ecosystem we’re studying. This could include data on nesting patterns and success rates for both bird species, which would help link population dynamics more directly to environmental conditions. We could also look at environmental degradation like pollution levels, habitat loss, and shoreline development, which could confound or mediate some of the relationships we observed. Precipitation levels and extreme weather would be interesting to look at because it could influence both fish population and bird species interactions. Migration patterns over the last few decades could be interesting to add as well because these may have shifted and changed over time as global temperatures have increased, which could explain mismatches in food availability or new competitive interactions. Lastly, in the future, expanding on these results or investigating similar species dynamics in other regions could provide important insights into how predator-prey relationships respond to environmental stressors. By integrating broader ecological variables, like sea surface temperature across larger zones, nesting behaviors, and migration patterns, we can better model how ecosystems respond not just to gradual climate change but to sudden ecological shifts. Understanding these dynamics can help identify early warning signs of ecosystem imbalance, guide conservation efforts, and inform policies that protect the environment and our biodiversity. 
+
+\begin{thebibliography}{00}
+\bibitem{b1} Bierregaard, R. (2024, May 21). Nature notes: Ospreys and eagles. Henry L. Ferguson Museum. \href{https://fergusonmuseum.org/2024/05/nature-notes-ospreys-and-eagles }{https://fergusonmuseum.org/2024/05/nature-notes-ospreys-and-eagles/}  
+
+\bibitem{b2} Connors, K., Jones, E., Peacock, S., and Belton, K. (2024). State of Salmon 2024 Report. Pacific Salmon Foundation, Vancouver, BC, Canada. DOI: 10.60740/3867-G827 \href{https://stateofsalmon.psf.ca/}{https://stateofsalmon.psf.ca/} 
+
+\bibitem{b3} Jabot, F., Pottier, J. (2012). A general modelling framework for resource‐ratio and CSR theories of plant community dynamics. Journal of Ecology, 100(5), 1296–1302. \href{https://doi.org/10.1111/j.1365-2745.2012.02024.x}{https://doi.org/10.1111/j.1365-2745.2012.02024.x}
+
+\bibitem{b4} NOAA National Centers for Environmental information, Climate at a Glance: Global Time Series, published April 2025, retrieved on May 11, 2025 from \href{https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series}{https://www.ncei.noaa.gov/access/monitoring/climate-at-a-glance/global/time-series}
+
+\bibitem{b5} eBird Basic Dataset. Verion: EBD 2024. Cornell Lab of Ornithology, Ithaca, New York \href{https://ebird.org/home}{https://ebird.org/home}
+
+\bibitem{b6} Broekman, M, Hilbers, J. (2022). Time-lagged effects of habitat fragmentation on terrestrial mammals in Madagascar \href{https://doi.org/10.1111/cobi.13942}{https://doi.org/10.1111/cobi.13942}
+
+
+\end{thebibliography}
+
+
+\end{document}
